@@ -39,7 +39,7 @@ const BuddyHistory = ({navigation,route}) => {
             const db=await SQLite.openDatabaseAsync("mydb")
                 const b= await db.getAllAsync("SELECT * FROM transactions WHERE tag = ?", name);
                 setTransactions(b)
-           
+                await db.closeAsync();
         }catch(error){
             console.log(error)
         }

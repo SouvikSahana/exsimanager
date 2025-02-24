@@ -8,6 +8,7 @@ import * as SQLite from 'expo-sqlite';
 
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Database from '../components/Database';
 
 const Home = () => {
     const navigation= useNavigation()
@@ -111,6 +112,15 @@ const Home = () => {
                 console.log(error)
             }
         }
+        const createDb=async()=>{
+            try{
+                const db= await SQLite.openDatabaseAsync("mydb")
+                await db.execAsync("CREATE TABLE IF NOT EXISTS items (id TEXT PRIMARY KEY , label TEXT,value TEXT, category TEXT);")
+                // await db.closeAsync();
+            }catch(error){
+                console.log(error)
+            }
+        }
         const fetchDb=async(id)=>{
             try{
                 const thisDay = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -133,8 +143,9 @@ const Home = () => {
                 setPayMethod(payMethod)
 
                 
-                const dayWise= await db.getAllAsync("SELECT SUM(price) AS value, SUM(price) AS dataPointText, strftime('%d', date/1000, 'unixepoch') as label FROM transactions WHERE expenseType='spent' GROUP BY strftime('%Y-%m-%d', date/1000, 'unixepoch')")
+                const dayWise= await db.getAllAsync("SELECT SUM(price) AS value, SUM(price) AS dataPointText, strftime('%d', date/1000, 'unixepoch') as label FROM transactions WHERE expenseType='spent' AND strftime('%Y-%m', date/1000, 'unixepoch') = ?  GROUP BY strftime('%Y-%m-%d', date/1000, 'unixepoch')",thisMonth)
                 setDayWise(dayWise)
+                await db.closeAsync();
             }catch(error){
                 console.log(error)
             }
@@ -145,13 +156,14 @@ const Home = () => {
          },[])
         useEffect(()=>{
             if(day){
+                createDb()
                 fetchDb()
             }
             
         },[day])
   return (
     <View className="flex-1">
-      
+      <Database />
         <ScrollView className=" " >
             {/* <View className="items-center p-2 mt-1">
                 <Text className="font-medium text-[22px]">₹ 12345</Text>
@@ -312,7 +324,7 @@ const Home = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={()=> navigation.navigate("Download")} className=" p-2 rounded-lg bg-orange-500 items-center">
-                    <Text className="font-medium text-white">Download Expenses</Text>
+                    <Text className="font-medium text-white">Download Data</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=> navigation.navigate("Support")} className=" p-2 rounded-lg bg-orange-500 items-center">
                     <Text className="font-medium text-white">Developer Support</Text>

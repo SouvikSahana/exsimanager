@@ -25,6 +25,7 @@ const MoneyBuddy = ({navigation}) => {
             await db.runAsync("DELETE FROM buddies WHERE id = ?",id);
             const filtered= buddies.filter((buddy)=> buddy.id!==id)
             setBuddies([...filtered])
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -61,6 +62,7 @@ const MoneyBuddy = ({navigation}) => {
                     setBuddies([...buddies,editContent])
                 }
                 closeModal()
+                await db.closeAsync();
             }else{
                 Alert.alert("Blank Field","Please enter Buddy Name")
             }
@@ -75,6 +77,7 @@ const MoneyBuddy = ({navigation}) => {
         try{
             const db= await SQLite.openDatabaseAsync("mydb")
             db.execAsync("CREATE TABLE IF NOT EXISTS buddies (id INTEGER PRIMARY KEY , name TEXT, mobile TEXT);")
+            // await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -84,6 +87,7 @@ const MoneyBuddy = ({navigation}) => {
             const db= await SQLite.openDatabaseAsync("mydb")
             const data=await db.getAllAsync("SELECT * from buddies")
             setBuddies(data)
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }

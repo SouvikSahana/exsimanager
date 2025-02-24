@@ -13,6 +13,7 @@ const Transaction = ({navigation,route}) => {
             const db= await SQLite.openDatabaseAsync("mydb")
             const getData= await db.getFirstAsync("SELECT * FROM transactions WHERE id = ? ",id)
             setData(getData)
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -42,6 +43,7 @@ const Transaction = ({navigation,route}) => {
             const db= await SQLite.openDatabaseAsync("mydb")
             await db.runAsync("DELETE FROM transactions WHERE id = ?",data?.id);
             navigation.replace("TransactionHistory")
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }

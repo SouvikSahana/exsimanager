@@ -90,6 +90,7 @@ const Target = () => {
         try{
             const db= await SQLite.openDatabaseAsync("mydb")
             db.execAsync("CREATE TABLE IF NOT EXISTS targets (id TEXT PRIMARY KEY , item TEXT, date INTEGER);")
+            // await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -99,6 +100,7 @@ const Target = () => {
             const db= await SQLite.openDatabaseAsync("mydb")
             const data=await db.getAllAsync("SELECT * from targets")
             setTargets(data)
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -107,6 +109,7 @@ const Target = () => {
         try{
             const db= await SQLite.openDatabaseAsync("mydb")
             db.execAsync("DROP TABLE targets")
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }

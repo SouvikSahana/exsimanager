@@ -9,14 +9,7 @@ import * as SQLite from 'expo-sqlite';
 
 const TransactionHistory = ({route}) => {
     const navigation= useNavigation()
-    const [categories,setCategories]= useState([
-        {name:"All"},
-        {name:"Food",image:"https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",amount:4000},
-        {name:"Grocery",image:"https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",amount:4000},
-        {name:"Festive",image:"https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",amount:4000},
-        {name:"Study",image:"https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",amount:4000},
-        {name:"Mis",image:"https://www.foodiesfeed.com/wp-content/uploads/2023/06/burger-with-melted-cheese.jpg",amount:4000}
-    ])
+    
     const [transactions,setTransactions]= useState([ ])
 
     const [isCategoryPicker,setIsCategoryPicker]= useState(false)
@@ -82,7 +75,7 @@ const fetchData=async()=>{
             const data= await db.getAllAsync("SELECT * FROM transactions WHERE strftime('%Y-%m-%d', transactions.date/1000, 'unixepoch') = ? order by date desc", thisDay);
             setTransactions(data)
         }
-       
+        await db.closeAsync();
     }catch(error){
         console.log(error)
     }

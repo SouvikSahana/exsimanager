@@ -7,7 +7,6 @@ import { Dropdown } from 'react-native-element-dropdown';
 import {useNavigation} from "@react-navigation/native"
 import * as SQLite from 'expo-sqlite';
 import * as Location from 'expo-location';
-import item from '../data/item.json';
 
 const Expense = ({route}) => {
     const [locations,setLocations]= useState([])
@@ -33,7 +32,7 @@ const Expense = ({route}) => {
 
     const navigation= useNavigation()
 
-    const [items,setItems]= useState([...item])
+    const [items,setItems]= useState([])
     const [prices,setPrices]= useState([100,200,300,400,500])
     const [isEdit,setIsEdit]= useState(false)
     const [date,setDate]= useState(new Date())
@@ -123,6 +122,7 @@ const Expense = ({route}) => {
             const db= await SQLite.openDatabaseAsync("mydb")
             db.execAsync("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY , date INTEGER, item TEXT,price TEXT, description TEXT, expenseType TEXT, paymentMethod TEXT, latitude INTEGER, longitude INTEGER, tag TEXT);")
             db.execAsync("CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY autoincrement, latitude INTEGER, longitude INTEGER);")
+            // await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -131,6 +131,7 @@ const Expense = ({route}) => {
         try{
             const db= await SQLite.openDatabaseAsync("mydb")
             db.execAsync("DROP TABLE transactions")
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -154,16 +155,20 @@ const Expense = ({route}) => {
         }catch(error){
             console.log(error)
         }
-        // try{
-        //     const fetchItems=await db.getAllAsync("SELECT * from items")
-        //     console.log(fetchItems)
-        //     setItems(fetchItems)
-        // }catch(error){
-        //     console.log(error)
-        // }
+        try{
+            const fetchItems=await db.getAllAsync("SELECT * from items")
+            setItems(fetchItems)
+        }catch(error){
+            console.log(error)
+        }
         try{
             const fetchLocations= await db.getAllAsync("SELECT * FROM locations");
             setLocations(fetchLocations)
+        }catch(error){
+            console.log(error)
+        }
+        try{
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -194,6 +199,7 @@ const Expense = ({route}) => {
                     }
                     await navigation.replace("Home")
                 }
+                await db.closeAsync();
             }else{
                 Alert.alert("Blank Field","Plaese fill the blank fields")
             }

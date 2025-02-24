@@ -14,6 +14,7 @@ const AddItem = () => {
             await db.runAsync("DELETE FROM items WHERE id = ?",id);
             const filtered= items.filter((item)=>item.id!==id)
             setItems([...filtered])
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -42,6 +43,7 @@ const AddItem = () => {
                     await db.runAsync("INSERT INTO items (id,label,value,category) VALUES (?,?,?,?)",id,label,label,category);
                     setCategory("")
                     setLabel("")
+                    await db.closeAsync();
                 }else{
                     Alert.alert("Duplicate Item","Item already present with this name")
                 }
@@ -57,6 +59,7 @@ const AddItem = () => {
         try{
             const db= await SQLite.openDatabaseAsync("mydb")
             await db.execAsync("CREATE TABLE IF NOT EXISTS items (id TEXT PRIMARY KEY, label TEXT,value TEXT, category TEXT);")
+            // await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -66,6 +69,7 @@ const AddItem = () => {
             const db= await SQLite.openDatabaseAsync("mydb")
             const data=await db.getAllAsync("SELECT * from items")
             setItems(data)
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }
@@ -74,6 +78,7 @@ const AddItem = () => {
         try{
             const db= await SQLite.openDatabaseAsync("mydb")
             db.execAsync("DROP TABLE items")
+            await db.closeAsync();
         }catch(error){
             console.log(error)
         }

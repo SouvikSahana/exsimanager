@@ -16,7 +16,8 @@ const Location = () => {
           const db= await SQLite.openDatabaseAsync("mydb")
           const fetchLocations= await db.getAllAsync("SELECT * FROM locations");
             setLocations(fetchLocations)
-            console.log(fetchLocations)
+            // console.log(fetchLocations)
+            await db.closeAsync();
         }catch(error){
           console.log(error)
         }

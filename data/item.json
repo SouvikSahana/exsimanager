@@ -2619,277 +2619,277 @@
     "id": "201000001",
     "label": "Mustard Oil",
     "value": "Mustard Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000002",
     "label": "Coconut Oil",
     "value": "Coconut Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000003",
     "label": "Olive Oil",
     "value": "Olive Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000004",
     "label": "Sunflower Oil",
     "value": "Sunflower Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000005",
     "label": "Soybean Oil",
     "value": "Soybean Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000006",
     "label": "Sesame Oil",
     "value": "Sesame Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000007",
     "label": "Groundnut Oil",
     "value": "Groundnut Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000008",
     "label": "Rice Bran Oil",
     "value": "Rice Bran Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000009",
     "label": "Almond Oil",
     "value": "Almond Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000010",
     "label": "Flaxseed Oil",
     "value": "Flaxseed Oil",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000011",
     "label": "Vanaspati Ghee",
     "value": "Vanaspati Ghee",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000012",
     "label": "Desi Ghee",
     "value": "Desi Ghee",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000013",
     "label": "Buffalo Ghee",
     "value": "Buffalo Ghee",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "201000014",
     "label": "Cow Ghee",
     "value": "Cow Ghee",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "202000001",
     "label": "Basmati Rice",
     "value": "Basmati Rice",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "202000002",
     "label": "Brown Rice",
     "value": "Brown Rice",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "202000003",
     "label": "Parboiled Rice",
     "value": "Parboiled Rice",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "202000004",
     "label": "Sona Masoori Rice",
     "value": "Sona Masoori Rice",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "202000005",
     "label": "Jasmine Rice",
     "value": "Jasmine Rice",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "202000006",
     "label": "Red Rice",
     "value": "Red Rice",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "202000007",
     "label": "Sticky Rice",
     "value": "Sticky Rice",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "203000001",
     "label": "Wheat Flour (Atta)",
     "value": "Wheat Flour",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "203000002",
     "label": "Maida (Refined Flour)",
     "value": "Maida",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "203000003",
     "label": "Bajra Flour",
     "value": "Bajra Flour",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "203000004",
     "label": "Jowar Flour",
     "value": "Jowar Flour",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "203000005",
     "label": "Ragi Flour",
     "value": "Ragi Flour",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "203000006",
     "label": "Corn Flour",
     "value": "Corn Flour",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "203000007",
     "label": "Besan (Gram Flour)",
     "value": "Besan",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "204000001",
     "label": "Toor Dal",
     "value": "Toor Dal",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "204000002",
     "label": "Moong Dal",
     "value": "Moong Dal",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "204000003",
     "label": "Chana Dal",
     "value": "Chana Dal",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "204000004",
     "label": "Urad Dal",
     "value": "Urad Dal",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "204000005",
     "label": "Masoor Dal",
     "value": "Masoor Dal",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "204000006",
     "label": "Green Gram",
     "value": "Green Gram",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "204000007",
     "label": "Black Eyed Peas",
     "value": "Black Eyed Peas",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "205000001",
     "label": "Turmeric Powder",
     "value": "Turmeric Powder",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "205000002",
     "label": "Red Chilli Powder",
     "value": "Red Chilli Powder",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "205000003",
     "label": "Cumin Seeds",
     "value": "Cumin Seeds",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "205000004",
     "label": "Coriander Powder",
     "value": "Coriander Powder",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "205000005",
     "label": "Garam Masala",
     "value": "Garam Masala",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "205000006",
     "label": "Black Pepper",
     "value": "Black Pepper",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "206000002",
     "label": "Curd",
     "value": "Curd",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "206000003",
     "label": "Paneer",
     "value": "Paneer",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "206000004",
     "label": "Butter",
     "value": "Butter",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "206000005",
     "label": "Cheese",
     "value": "Cheese",
-    "category": "Food"
+    "category": "Grocery"
   },
   {
     "id": "207000005",
     "label": "Raisins",
     "value": "Raisins",
-    "category": "Food"
+    "category": "Nuts"
   },
   {
     "id": "208000001",
