@@ -75,7 +75,7 @@ const fetchData=async()=>{
             const data= await db.getAllAsync("SELECT * FROM transactions WHERE strftime('%Y-%m-%d', transactions.date/1000, 'unixepoch') = ? order by date desc", thisDay);
             setTransactions(data)
         }
-        await db.closeAsync();
+        // await db.closeAsync();
     }catch(error){
         console.log(error)
     }
@@ -83,11 +83,12 @@ const fetchData=async()=>{
 useEffect(()=>{
     calendar(date)
  },[date])
+
 useEffect(()=>{
+  // console.log(route?.refresh)
     if(day){
         fetchData()
     }
-    
 },[day])
 
 

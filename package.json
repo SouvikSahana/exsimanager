@@ -16,6 +16,7 @@
     "axios": "^1.7.9",
     "expo": "~52.0.23",
     "expo-clipboard": "~7.0.1",
+    "expo-constants": "^17.0.7",
     "expo-document-picker": "^13.0.3",
     "expo-file-system": "~18.0.10",
     "expo-linear-gradient": "^14.0.1",

@@ -8,7 +8,7 @@ import * as SQLite from 'expo-sqlite';
 
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import Database from '../components/Database';
+import Reloader from '../components/Reloader';
 
 const Home = () => {
     const navigation= useNavigation()
@@ -115,6 +115,8 @@ const Home = () => {
         const createDb=async()=>{
             try{
                 const db= await SQLite.openDatabaseAsync("mydb")
+                await db.execAsync("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY , date INTEGER, item TEXT,price TEXT, description TEXT, expenseType TEXT, paymentMethod TEXT, latitude INTEGER, longitude INTEGER, tag TEXT);")
+                await db.execAsync("CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY autoincrement, latitude INTEGER, longitude INTEGER);")    
                 await db.execAsync("CREATE TABLE IF NOT EXISTS items (id TEXT PRIMARY KEY , label TEXT,value TEXT, category TEXT);")
                 // await db.closeAsync();
             }catch(error){
@@ -163,7 +165,7 @@ const Home = () => {
         },[day])
   return (
     <View className="flex-1">
-      <Database />
+      <Reloader />
         <ScrollView className=" " >
             {/* <View className="items-center p-2 mt-1">
                 <Text className="font-medium text-[22px]">₹ 12345</Text>
@@ -294,7 +296,7 @@ const Home = () => {
 
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="p-2 pt-4 bg-blue-50 rounded-xl mx-auto">
-                <LineChart data={dayWise} hideRules   areaChart1 scrollable scrollToEnd />
+                <LineChart data={dayWise} hideRules  spacing={25}   areaChart1 scrollable scrollToEnd initialSpacing={25} />
                 {/* <LineChart data={dayWise} hideDataPoints areaChart1  hideYAxisText hideRules spacing={40}/> */}
                 </ScrollView>
 

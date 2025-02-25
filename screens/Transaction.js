@@ -42,7 +42,12 @@ const Transaction = ({navigation,route}) => {
         try{
             const db= await SQLite.openDatabaseAsync("mydb")
             await db.runAsync("DELETE FROM transactions WHERE id = ?",data?.id);
-            navigation.replace("TransactionHistory")
+            // navigation.goBack("TransactionHistory",{refresh:true})
+            // navigation.dispatch(StackActions.replace("TransactionHistory",{refresh:true}))
+            navigation.reset({
+                index: 0,  // Set TransactionHistory as the first screen
+                routes: [{ name: "TransactionHistory", params: { refresh: true } }],
+              });
             await db.closeAsync();
         }catch(error){
             console.log(error)

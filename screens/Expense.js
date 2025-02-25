@@ -122,6 +122,7 @@ const Expense = ({route}) => {
             const db= await SQLite.openDatabaseAsync("mydb")
             db.execAsync("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY , date INTEGER, item TEXT,price TEXT, description TEXT, expenseType TEXT, paymentMethod TEXT, latitude INTEGER, longitude INTEGER, tag TEXT);")
             db.execAsync("CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY autoincrement, latitude INTEGER, longitude INTEGER);")
+            db.execAsync("CREATE TABLE IF NOT EXISTS buddies (id INTEGER PRIMARY KEY , name TEXT, mobile TEXT);")
             // await db.closeAsync();
         }catch(error){
             console.log(error)
@@ -197,7 +198,10 @@ const Expense = ({route}) => {
                             await db.runAsync("INSERT INTO locations (latitude, longitude) VALUES (?,?)", location?.latitude, location?.longitude);
                          }
                     }
-                    await navigation.replace("Home")
+                    await navigation.reset({
+                        index: 0,  // Set TransactionHistory as the first screen
+                        routes: [{ name: "TransactionHistory", params: { refresh: true } }],
+                      });
                 }
                 await db.closeAsync();
             }else{

@@ -78,7 +78,7 @@ const BuddyHistory = ({navigation,route}) => {
                 `💰 *Amount:* ₹${status?.value*-1}\n` +
                 `✅ Transaction Data tracked by ExsiManager\n` + list ;
           
-              const whatsappUrl = `whatsapp://send?phone=${data?.mobile}&text=${encodeURIComponent(message)}`;
+              const whatsappUrl = `whatsapp://send?phone=+91${data?.mobile}&text=${encodeURIComponent(message)}`;
           
               Linking.openURL(whatsappUrl).catch(() =>
                 Alert.alert("WhatsApp is not installed!")

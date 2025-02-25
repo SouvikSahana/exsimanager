@@ -1,4 +1,4 @@
-import { View, Text, Modal , Button, ActivityIndicator} from 'react-native'
+import { View, Text, Modal , Button, ActivityIndicator, Alert} from 'react-native'
 import React,{useState,useEffect} from 'react'
 import * as Network from "expo-network"
 import axios from "axios"
@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import {shareAsync} from "expo-sharing"
 
-const Database = () => {
+const Reloader = () => {
     const [netStatus, setNetStatus] = useState(null);
     const [isOpen,setIsOpen]= useState(false)
 
@@ -15,42 +15,45 @@ const Database = () => {
       
     const checkNetwork = async () => {
         try {
-            const isFirst= await AsyncStorage.getItem("first")
-            console.log(isFirst)
                 const status = await Network.getNetworkStateAsync();
                 setNetStatus(status);
                 if(status?.isConnected){
                     const db= await SQLite.openDatabaseAsync("mydb")
-                    const data= await axios.get(url)
-                    
-                    if(data?.data?.length>0 && (!isFirst || JSON.parse(isFirst)<data?.data?.length)){
-                        var count=0;
-                        console.log("Runnig db")
-                        setIsOpen(true)
-                            data?.data?.forEach(async({ id, label, value, category }) => {
-                                try{
-                                    await db.runAsync('INSERT INTO items (id, label, value, category) VALUES (?, ?, ? , ?);', id, label, value, category);
-                                }catch(error){
-                                    console.log(error)
-                                }finally{
-                                    count ++;
-                                    // console.log("data added: ",count);
-                                    if(count==data?.data?.length){
-                                        AsyncStorage.setItem("first",JSON.stringify(count))
-                                        setIsOpen(false)
+                    try{
+                        const data= await axios.get(url)
+                        const length= await  db.getAllAsync("SELECT COUNT(*) as count FROM items");
+                        // console.log(length)
+                        if(await data?.data?.length>0 &&  JSON.parse(length[0]?.count)<await data?.data?.length){
+                            var count=0;
+                            console.log("Runnig db")
+                            setIsOpen(true)
+                                await data?.data?.forEach(async({ id, label, value, category }) => {
+                                    try{
+                                        await db.runAsync('INSERT INTO items (id, label, value, category) VALUES (?, ?, ? , ?);', id, label, value, category);
+                                    }catch(error){
+                                        console.log(error)
+                                    }finally{
+                                        count ++;
+                                        if(count==data?.data?.length){
+                                            setIsOpen(false)
+                                        }
                                     }
-                                }
-                                
-                            });
-                    }else{
-                        console.log("Data not available or already loaded to local database")
+                                    
+                                });
+                        }else{
+                            console.log("Data not available or already loaded to local database")
+                        }
+                    }catch(error){
+                        console.log(error)
                     }
-                    
-                    
+                    //  db.closeAsync() beacuse of at last closing happened in Home.js
+                }else{
+                    console.log("Network is not connected.")
                 }
             
         } catch (error) {
           console.error("Error fetching network status:", error);
+          Alert.alert("Error", error)
         }
       };
 
@@ -106,4 +109,4 @@ const dropTable=async()=>{
   )
 }
 
-export default Database
+export default Reloader

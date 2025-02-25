@@ -10,25 +10,37 @@ const BottomTab = () => {
     const [active,setIsActive] = useState("")
     const navigation= useNavigation()
 
+    const handleNavigate=async(path)=>{
+        try{
+            navigation.reset({
+                index: 0,  // Set TransactionHistory as the first screen
+                routes: [{ name: path }],
+              });
+        }catch(error){
+            console.log(error)
+        }
+    }
+   
+
   return (
     <View className="absolute bottom-1 flex-1 w-[100%]">
         <View className="bg-[#0489F4] h-[65px] p-2 mb-6 mx-4 rounded-xl elevation-xl flex flex-row justify-between px-10">
-            <TouchableOpacity className="p-4 bg-blue-400 rounded-full" onPress={()=> navigation.dispatch(StackActions.replace("Home"))}>
+            <TouchableOpacity className="p-4 bg-blue-400 rounded-full" onPress={()=> handleNavigate("Home")}>
                 <AntDesign name="home" size={24} color="white" />
                 </TouchableOpacity>
-            <TouchableOpacity className="p-4 bg-blue-400 rounded-full" onPress={()=> navigation.dispatch(StackActions.replace("TransactionHistory"))}>
+            <TouchableOpacity className="p-4 bg-blue-400 rounded-full" onPress={()=> handleNavigate("TransactionHistory")}>
                 <Ionicons name="receipt-outline" size={24} color="white" />
                 </TouchableOpacity>
             <View className="overflow-hidden   h-[70px] w-[70px] items-center justify-center relative bottom-5 border-[1px] border-[#0489F4] bg-white rounded-full">
-            <Pressable android_ripple={{color:'skyblue'}} className="p-4  h-[70px] w-[70px] items-center justify-center" onPress={()=> navigation.dispatch(StackActions.replace("Expense"))}>
+            <Pressable android_ripple={{color:'skyblue'}} className="p-4  h-[70px] w-[70px] items-center justify-center" onPress={()=> handleNavigate("Expense")}>
                 <FontAwesome6 name="add" size={28} color="black" /> 
                 </Pressable>
                 </View>
-            <TouchableOpacity className="p-4 bg-blue-400 rounded-full" onPress={()=> navigation.dispatch(StackActions.replace("Target"))}>
+            <TouchableOpacity className="p-4 bg-blue-400 rounded-full" onPress={()=> handleNavigate("Target")}>
                 {/* <AntDesign name="user" size={24} color="white" />  */}
                 <Foundation name="target-two" size={24} color="white" />
                 </TouchableOpacity>
-            <TouchableOpacity className="p-4 bg-blue-400 rounded-full" onPress={()=> navigation.dispatch(StackActions.replace("MoneyBuddy"))}>
+            <TouchableOpacity className="p-4 bg-blue-400 rounded-full" onPress={()=> handleNavigate("MoneyBuddy")}>
                 {/* <AntDesign name="setting" size={24} color="white" /> */}
                 <FontAwesome6 name="person-falling" size={24} color="white" />
                 </TouchableOpacity>
