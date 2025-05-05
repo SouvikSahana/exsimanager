@@ -7,11 +7,29 @@ import { Dropdown } from 'react-native-element-dropdown';
 import {useNavigation} from "@react-navigation/native"
 import * as SQLite from 'expo-sqlite';
 import * as Location from 'expo-location';
+import * as Contacts from 'expo-contacts';
 
 const Expense = ({route}) => {
     const [locations,setLocations]= useState([])
     const [location, setLocation] = useState();
   const [errorMsg, setErrorMsg] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const [name,setName]= useState(null)
+  useEffect(() => {
+      (async () => {
+        const { status } = await Contacts.requestPermissionsAsync();
+        if (status === 'granted') {
+          const { data } = await Contacts.getContactsAsync({
+            fields: [Contacts.Fields.PhoneNumbers],
+          });
+  
+          if (data.length > 0) {
+            setContacts(data);
+            // console.log(data)
+          }
+        }
+      })();
+    }, []);
 
   useEffect(() => {
     async function getCurrentLocation() {
@@ -73,7 +91,8 @@ const Expense = ({route}) => {
         paymentMethod:"online",
         latitude: null,
         longitude: null,
-        tag: null
+        tag: null,
+        name:null
     })
 
     useEffect(()=>{
@@ -120,9 +139,9 @@ const Expense = ({route}) => {
       const createDb=async()=>{
         try{
             const db= await SQLite.openDatabaseAsync("mydb")
-            db.execAsync("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY , date INTEGER, item TEXT,price TEXT, description TEXT, expenseType TEXT, paymentMethod TEXT, latitude INTEGER, longitude INTEGER, tag TEXT);")
+            db.execAsync("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY , date INTEGER, item TEXT,price TEXT, description TEXT, expenseType TEXT, paymentMethod TEXT, latitude INTEGER, longitude INTEGER, tag TEXT, name TEXT);")
             db.execAsync("CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY autoincrement, latitude INTEGER, longitude INTEGER);")
-            db.execAsync("CREATE TABLE IF NOT EXISTS buddies (id INTEGER PRIMARY KEY , name TEXT, mobile TEXT);")
+            // db.execAsync("CREATE TABLE IF NOT EXISTS buddies (id INTEGER PRIMARY KEY , name TEXT, mobile TEXT);")
             // await db.closeAsync();
         }catch(error){
             console.log(error)
@@ -144,18 +163,18 @@ const Expense = ({route}) => {
         }catch(error){
             console.log(error)
         }
-        try{
-            const data= await db.getAllAsync("SELECT * FROM buddies");
-            const filtered= await data?.map((it)=>{
-                return {
-                    label: it.name,
-                    value: it.name
-                }
-            })
-            setBuddies(filtered)
-        }catch(error){
-            console.log(error)
-        }
+        // try{
+        //     const data= await db.getAllAsync("SELECT * FROM buddies");
+        //     const filtered= await data?.map((it)=>{
+        //         return {
+        //             label: it.name,
+        //             value: it.name
+        //         }
+        //     })
+        //     setBuddies(filtered)
+        // }catch(error){
+        //     console.log(error)
+        // }
         try{
             const fetchItems=await db.getAllAsync("SELECT * from items")
             setItems(fetchItems)
@@ -187,9 +206,9 @@ const Expense = ({route}) => {
                             content?.latitude, content?.longitude, content?.tag,content?.id
                         )
                     }else{
-                         await db.runAsync("INSERT INTO transactions (id,date,item,price,description,expenseType,paymentMethod,latitude, longitude, tag) VALUES (?,?,?,?,?,?,?,?,?,?)",
+                         await db.runAsync("INSERT INTO transactions (id,date,item,price,description,expenseType,paymentMethod,latitude, longitude, tag,name) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
                             content?.id, content?.date, content?.item, content?.price, content?.description, content?.expenseType, content?.paymentMethod,
-                            location?.latitude, location?.longitude, content?.tag
+                            location?.latitude, location?.longitude, content?.tag, content?.name
                          )
                          const filterLocation= locations.filter((l)=>l.latitude==location?.latitude && l.longitude==location?.longitude)
                          if(filterLocation.length>0){
@@ -323,14 +342,16 @@ const Expense = ({route}) => {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={buddies}
+            data={contacts}
             search
             maxHeight={300}
-            labelField="label"
-            valueField="value"
+            labelField="name"           
+            valueField="lookupKey"
+            // labelField="label"
+            // valueField="value"
             value={content?.tag}
             onChange={item => {
-                setContent({...content,tag:item.value})
+                setContent({...content,tag:item?.lookupKey,name:item?.name})
                 // setIsFocus(false);
             }}
             placeholder='Tag person'

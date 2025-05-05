@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import * as SQLite from 'expo-sqlite';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Transaction = ({navigation,route}) => {
     const [data,setData]= useState({})
@@ -70,43 +71,46 @@ const Transaction = ({navigation,route}) => {
       }
   return (
     <View className="px-4 p-2">
-        <View className="flex flex-row mt-2 items-center">
-            <Text className="font-semibold text-lg">Item: </Text>
-            <Text>{data?.item}</Text>
+        <View className="flex flex-row mt-2 items-center ml-6">
+            <Text className="text-green-700 italic">{formatDate(data?.date)}</Text>
+        </View>
+        <View className="flex flex-row mt-0 items-center">
+            {/* <Text className="font-semibold text-lg">Item: </Text> */}
+            <Text className="font-semibold text-2xl mx-auto text-blue-800">{data?.item}</Text>
         </View>
         <View className="flex flex-row mt-2 items-center">
-            <Text className="font-semibold text-lg">Price: </Text>
-            <Text>{data?.price}</Text>
+            {/* <Text className="font-semibold text-lg">Price: </Text> */}
+            <Text className="mx-auto text-lg font-semibold text-purple-500"> ₹ {data?.price}</Text>
         </View>
-        {
-           (data?.expenseType=="lent" || data?.expenseType=="borrow") && ( <View className="flex flex-row mt-2 items-center">
-            <Text className="font-semibold text-lg">Person: </Text>
-            <Text>{data?.tag}</Text>
-        </View>)
-        }
-        <View className="flex flex-row mt-2 items-center">
-            <Text className="font-semibold text-lg">Date: </Text>
-            <Text>{formatDate(data?.date)}</Text>
-        </View>
-        <View className="flex flex-row mt-2 items-center">
-            <Text className="font-semibold text-lg">Expense Type: </Text>
-            <Text>{data?.expenseType}</Text>
-        </View>
-        <View className="flex flex-row mt-2 items-center">
-            <Text className="font-semibold text-lg">Payment Method: </Text>
-            <Text>{data?.paymentMethod}</Text>
-        </View>
-        <View className="flex flex-row mt-2 items-center">
-            <Text className="font-semibold text-lg">Description: </Text>
-            <Text>{data?.description}</Text>
-        </View>
-        <View className="flex flex-row items-center mt-2">
-            <Text className="font-semibold text-lg">Location: </Text>
-            <Text>Lat: {data?.latitude}, Lon: {data?.longitude}</Text>
-        </View>
+        {data?.description && <View className="flex flex-row mt-2 items-center">
+            <Text className="mx-auto p-2">{data?.description}</Text>
+        </View>}
+       
+       <View className="flex flex-row flex-wrap gap-3 justify-center mt-6">
+            <View className=" bg-green-800 p-2 px-4 rounded-xl">
+                    <Text className="text-white capitalize">{data?.expenseType}</Text>
+                </View>
+                <View  className=" bg-orange-800 p-2 px-4 rounded-xl">
+                    <Text className="text-white capitalize">{data?.paymentMethod}</Text>
+                </View>
 
-        <View className="mt-4 flex flex-row gap-2">
-            <TouchableOpacity onPress={handleEdit} className="flex flex-1 flex-row gap-2 bg-green-600 p-2 rounded-lg justify-center">
+                {
+                (data?.expenseType=="lent" || data?.expenseType=="borrow") && ( <View className=" bg-purple-800 p-2 px-4 rounded-xl">
+                    {/* <Text className="font-semibold text-lg">Person: </Text> */}
+                    <Text className="text-white">{data?.name}</Text>
+                </View>)
+                }
+        </View>
+        
+       
+        <TouchableOpacity className="flex flex-row justify-center gap-2 bg-blue-500 p-2 w-[50%] mx-auto rounded-lg items-center mt-6" onPress={()=>Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${data?.latitude},${data?.longitude}`)}>
+        <Ionicons name="location-outline" size={24} color="white" />
+            <Text className="text-white text-lg ">Location </Text>
+            {/* <Text>Lat: {data?.latitude}, Lon: {data?.longitude}</Text> */}
+        </TouchableOpacity>
+
+        <View className="mt-20 flex flex-row gap-2 ">
+            <TouchableOpacity onPress={handleEdit} className="flex flex-1 flex-row gap-2 bg-blue-600 p-2 rounded-lg justify-center">
                 <FontAwesome name="edit" size={24} color="white" />
                 <Text className="text-white">Edit</Text>
             </TouchableOpacity>

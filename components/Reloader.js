@@ -17,7 +17,9 @@ const Reloader = () => {
         try {
                 const status = await Network.getNetworkStateAsync();
                 setNetStatus(status);
-                if(status?.isConnected){
+                const isDone = await AsyncStorage.getItem("sync")
+                console.log(isDone)
+                if(status?.isConnected && !isDone){
                     const db= await SQLite.openDatabaseAsync("mydb")
                     try{
                         const data= await axios.get(url)
@@ -40,11 +42,14 @@ const Reloader = () => {
                                     }
                                     
                                 });
+                                await AsyncStorage.setItem("sync","done")
                         }else{
                             console.log("Data not available or already loaded to local database")
                         }
                     }catch(error){
                         console.log(error)
+                    }finally{
+                       
                     }
                     //  db.closeAsync() beacuse of at last closing happened in Home.js
                 }else{
@@ -59,7 +64,7 @@ const Reloader = () => {
 
   useEffect(() => {
     createDb()
-    checkNetwork();
+   checkNetwork()
     // dropTable()
   }, []);
 
@@ -68,6 +73,7 @@ const Reloader = () => {
     try{
         const db= await SQLite.openDatabaseAsync("mydb")
         await db.execAsync("CREATE TABLE IF NOT EXISTS items (id TEXT PRIMARY KEY , label TEXT,value TEXT, category TEXT);")
+        
     }catch(error){
         console.log(error)
     }

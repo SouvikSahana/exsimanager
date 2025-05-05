@@ -42,6 +42,18 @@
     "category": "Transport"
   },
   {
+    "id": "1739420521596",
+    "label": "Metro",
+    "value": "Metro",
+    "category": "Transport"
+  },
+  {
+    "id": "1739420521597",
+    "label": "Cycle Parts",
+    "value": "Cycle Parts",
+    "category": "Transport"
+  },
+  {
     "id": "1739420522001",
     "label": "Apple",
     "value": "Apple",
@@ -615,6 +627,12 @@
     "id": "1739420526022",
     "label": "Homeopathic Medicine",
     "value": "Homeopathic Medicine",
+    "category": "Health"
+  },
+  {
+    "id": "1739420526023",
+    "label": "Alopathy Medicine",
+    "value": "Alopathy Medicine",
     "category": "Health"
   },
   {
@@ -4852,5 +4870,113 @@
     "label": "Hiking Stick",
     "value": "Hiking Stick",
     "category": "Sports"
+  },
+  {
+    "id": "400900000",
+    "label": "Money Gift",
+    "value": "Money Gift",
+    "category": "Gift"
+  },
+  {
+    "id": "400940000",
+    "label": "Tooth Brush",
+    "value": "Tooth Brush",
+    "category": "Daily Needs"
+  },
+  {
+    "id": "400940001",
+    "label": "Ginger",
+    "value": "Ginger",
+    "category": "Veggies"
+  },
+  {
+    "id": "400940002",
+    "label": "Corn",
+    "value": "Corn",
+    "category": "Veggies"
+  },
+  {
+    "id": "400940003",
+    "label": "Delivery Charges",
+    "value": "Delivery Charges",
+    "category": "Delivery"
+  },
+  {
+    "id": "400940004",
+    "label": "Rapido",
+    "value": "Rapido",
+    "category": "Transport"
+  },
+  {
+    "id": "400940005",
+    "label": "Uber",
+    "value": "Uber",
+    "category": "Transport"
+  },
+  {
+    "id": "400940006",
+    "label": "Money Donation",
+    "value": "Money Donation",
+    "category": "Donation"
+  },
+  {
+    "id": "400940007",
+    "label": "Roti",
+    "value": "Roti",
+    "category": "Food"
+  },
+  {
+    "id": "400940008",
+    "label": "Chanachur",
+    "value": "Chanachur",
+    "category": "Food"
+  },
+  {
+    "id": "400940010",
+    "label": "Muri",
+    "value": "Muri",
+    "category": "Food"
+  },
+  {
+    "id": "400940011",
+    "label": "Misti",
+    "value": "Misti",
+    "category": "Food"
+  },
+  {
+    "id": "400940012",
+    "label": "Biriyani",
+    "value": "Biriyani",
+    "category": "Food"
+  },
+  {
+    "id": "400940013",
+    "label": "Mirchi",
+    "value": "Mirchi",
+    "category": "Mirchi"
+  },
+  {
+    "id": "400940014",
+    "label": "Soap",
+    "value": "Soap",
+    "category": "Beauty"
+  },
+  {
+    "id": "400940015",
+    "label": "Egg",
+    "value": "Egg",
+    "category": "Food"
+  },
+  {
+    "id": "400940016",
+    "label": "Bread",
+    "value": "Bread",
+    "category": "Food"
+  },
+  {
+    "id": "400940017",
+    "label": "Egg Roll",
+    "value": "Egg Roll",
+    "category": "Food"
   }
 ]

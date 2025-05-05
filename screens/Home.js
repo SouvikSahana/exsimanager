@@ -115,7 +115,7 @@ const Home = () => {
         const createDb=async()=>{
             try{
                 const db= await SQLite.openDatabaseAsync("mydb")
-                await db.execAsync("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY , date INTEGER, item TEXT,price TEXT, description TEXT, expenseType TEXT, paymentMethod TEXT, latitude INTEGER, longitude INTEGER, tag TEXT);")
+                await db.execAsync("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY , date INTEGER, item TEXT,price TEXT, description TEXT, expenseType TEXT, paymentMethod TEXT, latitude INTEGER, longitude INTEGER, tag TEXT, name TEXT);")
                 await db.execAsync("CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY autoincrement, latitude INTEGER, longitude INTEGER);")    
                 await db.execAsync("CREATE TABLE IF NOT EXISTS items (id TEXT PRIMARY KEY , label TEXT,value TEXT, category TEXT);")
                 // await db.closeAsync();
@@ -157,7 +157,7 @@ const Home = () => {
             calendar()
          },[])
         useEffect(()=>{
-            if(day){
+            if(day>=0){
                 createDb()
                 fetchDb()
             }
@@ -178,16 +178,16 @@ const Home = () => {
                 snapToAlignment="start"
             >
                 <View className="w-[100vw]">
-                    <View className="p-4   bg-gray-200 m-4 rounded-md">
-                        <Text className="font-medium text-blue-500 mb-4">Today</Text>
-                        <View className="flex flex-row flex-wrap  justify-evenly gap-3">
+                    <View className="p-4 elevation-lg  bg-slate-50 m-4 rounded-md">
+                        <Text className="font-medium text-blue-500 mb-4 mx-auto">Today</Text>
+                        <View className="flex flex-row flex-wrap  justify-evenly gap-0">
                                 {
                                     expenseType?.map((it,index)=>{
                                         return(
-                                            <TouchableOpacity key={index}  className={`flex flex-col  p-2 ${it?.type=="spent"?"bg-red-200":(it?.type=="lent"?"bg-purple-200":(it?.type=="borrow"?"bg-slate-300":"bg-green-200"))}  rounded-lg w-[45%]`}>
-                                        <Text className="text-[14px] ">{it?.type}</Text>
-                                        <Text className="text-[16px] font-medium">₹ {it?.total}</Text>
-                                             </TouchableOpacity>
+                                            <View key={index}  className={`flex flex-col  p-2 rounded-lg `}>
+                                        <Text className={`text-[16px] font-semibold capitalize mx-auto ${it?.type=="spent"?"text-red-600":(it?.type=="lent"?"text-purple-600":(it?.type=="borrow"?"text-slate-600":"text-green-600"))} `}>{it?.type}</Text>
+                                        <Text className={`text-[14px] italic mx-auto ${it?.type=="spent"?"text-red-600":(it?.type=="lent"?"text-purple-600":(it?.type=="borrow"?"text-slate-600":"text-green-600"))} `}>₹ {it?.total}</Text>
+                                             </View>
                                         )
                                     })
                                 }
@@ -195,16 +195,16 @@ const Home = () => {
                     </View>
                 </View>
                 <View className="w-[100vw]">
-                    <View className="p-4  bg-gray-200 m-4 rounded-md">
-                        <Text className="font-medium text-blue-500 mb-4">{months[currentDate.getMonth()]}' {currentDate.getFullYear()}</Text>
+                    <View className="p-4 elevation-lg  bg-slate-50 m-4 rounded-md">
+                        <Text className="font-medium text-blue-500 mb-4 mx-auto">{months[currentDate.getMonth()]}' {currentDate.getFullYear()}</Text>
                         <View className="flex flex-row flex-wrap  justify-evenly gap-3">
                         {
                                     expenseTypeMonth?.map((it,index)=>{
                                         return(
-                                            <TouchableOpacity key={index}  className={`flex flex-col  p-2 ${it?.type=="spent"?"bg-red-200":(it?.type=="lent"?"bg-purple-200":(it?.type=="borrow"?"bg-slate-300":"bg-green-200"))}  rounded-lg w-[45%]`}>
-                                        <Text className="text-[14px] ">{it?.type}</Text>
-                                        <Text className="text-[16px] font-medium">₹ {it?.total}</Text>
-                                             </TouchableOpacity>
+                                            <View key={index}  className={`flex flex-col  p-2 rounded-lg `}>
+                                        <Text className={`text-[16px] font-semibold capitalize mx-auto ${it?.type=="spent"?"text-red-600":(it?.type=="lent"?"text-purple-600":(it?.type=="borrow"?"text-slate-600":"text-green-600"))} `}>{it?.type}</Text>
+                                        <Text className={`text-[14px] italic mx-auto ${it?.type=="spent"?"text-red-600":(it?.type=="lent"?"text-purple-600":(it?.type=="borrow"?"text-slate-600":"text-green-600"))} `}>₹ {it?.total}</Text>
+                                             </View>
                                         )
                                     })
                                 }
@@ -212,16 +212,16 @@ const Home = () => {
                     </View>
                  </View>
                 <View className="w-[100vw]">
-                    <View className="p-4  bg-gray-200 m-4 rounded-md">
-                        <Text className="font-medium text-blue-500 mb-4"> {currentDate.getFullYear()}</Text>
+                    <View className="p-4 elevation-lg bg-slate-50 m-4 rounded-md">
+                        <Text className="font-medium text-blue-500 mb-4 mx-auto"> {currentDate.getFullYear()}</Text>
                         <View className="flex flex-row flex-wrap  justify-evenly gap-3">
                         {
                                     expenseTypeYear?.map((it,index)=>{
                                         return(
-                                            <TouchableOpacity key={index}  className={`flex flex-col  p-2 ${it?.type=="spent"?"bg-red-200":(it?.type=="lent"?"bg-purple-200":(it?.type=="borrow"?"bg-slate-300":"bg-green-200"))}  rounded-lg w-[45%]`}>
-                                        <Text className="text-[14px] ">{it?.type}</Text>
-                                        <Text className="text-[16px] font-medium">₹ {it?.total}</Text>
-                                             </TouchableOpacity>
+                                            <View key={index}  className={`flex flex-col  p-2 rounded-lg `}>
+                                        <Text className={`text-[16px] font-semibold capitalize mx-auto ${it?.type=="spent"?"text-red-600":(it?.type=="lent"?"text-purple-600":(it?.type=="borrow"?"text-slate-600":"text-green-600"))} `}>{it?.type}</Text>
+                                        <Text className={`text-[14px] italic mx-auto ${it?.type=="spent"?"text-red-600":(it?.type=="lent"?"text-purple-600":(it?.type=="borrow"?"text-slate-600":"text-green-600"))} `}>₹ {it?.total}</Text>
+                                             </View>
                                         )
                                     })
                                 }
@@ -230,22 +230,23 @@ const Home = () => {
                 </View>
             </ScrollView>
 
-
-            <Text className="font-medium text-blue-500 mb-4 mx-4">{months[currentDate.getMonth()]}' {currentDate.getFullYear()}</Text>
+        <View className="bg-slate-50 rounded-md p-2 my-1 mb-4 mx-4 elevation-lg">
+            <Text className="font-medium text-blue-500 mb-0 mx-4">{months[currentDate.getMonth()]}' {currentDate.getFullYear()}</Text>
                 {/* cash & online percentage */}
-                 <View className="p-1  bg-gray-100 m-0 mx-4 rounded-md">
-                <View className="flex flex-row flex-wrap  justify-center gap-1">
+                 <View className="p-1  m-0 mx-4 rounded-md">
+                <View className="flex flex-row flex-wrap  justify-between gap-1">
                                 {payMethod?.map((pay,index)=>{
+                                    // console.log(pay)
                                     return(
-                                    <TouchableOpacity key={index} className={`flex flex-col  p-2 ${pay?.type=="cash"?"bg-red-200":(pay?.type=="online"?"bg-green-200":"bg-blue-200")} rounded-lg flex-1`}>
-                                        <Text className="text-[14px] font-medium">{pay?.type}</Text>
-                                        <Text className="text-[14px] italic">₹ {pay?.total}</Text>
-                                    </TouchableOpacity>
+                                    <View key={index} className={`flex flex-col  p-2  rounded-lg flex-1`}>
+                                        <Text className={`text-[16px] mx-auto font-medium capitalize ${pay?.type=="cash"?"text-red-600":(pay?.type=="online"?"text-green-600":"text-purple-600")}`}>{pay?.type}</Text>
+                                        <Text className={`text-[14px] mx-auto italic capitalize ${pay?.type=="cash"?"text-red-600":(pay?.type=="online"?"text-green-600":"text-purple-600")}`}>₹ {pay?.total}</Text>
+                                    </View>
                                     )
                                 })}
                 </View>
             </View>
-
+        </View>
 
         {/* Filter */}
         {/* <View className="p-3 px-6 flex flex-row justify-between">
@@ -294,41 +295,40 @@ const Home = () => {
             </View>
         </Modal>
 
-
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="p-2 pt-4 bg-blue-50 rounded-xl mx-auto">
-                <LineChart data={dayWise} hideRules  spacing={25}   areaChart1 scrollable scrollToEnd initialSpacing={25} />
-                {/* <LineChart data={dayWise} hideDataPoints areaChart1  hideYAxisText hideRules spacing={40}/> */}
-                </ScrollView>
+{/* {console.log(dayWise)} */}
+            {dayWise?.length>0 && <ScrollView horizontal showsHorizontalScrollIndicator={false} className="p-2 pt-4  rounded-md py-4 mx-4">
+            {/* bg-slate-50 elevation-lg */}
+                { dayWise?.length>14?<LineChart data={dayWise} hideRules  spacing={25}  scrollable scrollToEnd  areaChart1  initialSpacing={25} />:
+                <LineChart data={dayWise} hideRules width={wd?.width-100}  color1='grey'  spacing={25}  scrollable scrollToEnd  areaChart2  initialSpacing={25} />
+                }
+                </ScrollView>}
 
                 {/* Category data */}
-            <View className="p-4 flex  flex-row flex-wrap  justify-evenly gap-3 bg-gray-200 m-4 rounded-md ">
+            <View className="p-4 flex  flex-row flex-wrap  justify-evenly gap-3 bg-slate-200 elevation-md m-4 rounded-md ">
                 {categoryData?.map((category,index)=>{
                     return(
-                        <TouchableOpacity key={index} className="flex flex-row gap-3 p-2 items-center bg-purple-300 rounded-lg w-[45%]">
-                            <View>
-                            <Text className="text-[14px] font-medium">{category?.category}</Text>
-                            <Text className="text-[13px]">₹ {category?.total}</Text>
-                            </View>
-                            
-                        </TouchableOpacity>
+                        <View key={index} className="flex flex-col gap-0 p-1 items-center bg-blue-500 rounded-lg w-[45%]">
+                            <Text className="text-[14px]  text-white font-medium">{category?.category}</Text>
+                            <Text className="text-[13px] text-white">₹ {category?.total}</Text>
+                        </View>
                     )
                 })}
             </View>
            
            {/* Location */}
-            <TouchableOpacity onPress={()=> navigation.navigate("Location")} className="mb-4 mx-10 bg-blue-700 p-3 rounded-lg">
-                <Text className="text-white text-center">Location Wise Data</Text>
+            <TouchableOpacity onPress={()=> navigation.navigate("Location")} className="mb-4 mx-10 bg-blue-700 flex items-center justify-center p-3 rounded-lg">
+                <Text className="text-white text-center"> <EvilIcons name="location" size={16} color="white" /> Location Wise Data</Text>
             </TouchableOpacity>
             <View>
              <View className="mb-[112px] flex flex-row flex-wrap mx-4 gap-2 justify-center">
-                    <TouchableOpacity onPress={()=> navigation.navigate("Additem")} className=" p-2 rounded-lg bg-orange-500  items-center">
+                    <TouchableOpacity onPress={()=> navigation.navigate("Additem")} className=" p-2 rounded-lg bg-slate-500  items-center">
                     <Text className="font-medium text-white">Add Item</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={()=> navigation.navigate("Download")} className=" p-2 rounded-lg bg-orange-500 items-center">
+                <TouchableOpacity onPress={()=> navigation.navigate("Download")} className=" p-2 rounded-lg bg-slate-500 items-center">
                     <Text className="font-medium text-white">Download Data</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=> navigation.navigate("Support")} className=" p-2 rounded-lg bg-orange-500 items-center">
+                <TouchableOpacity onPress={()=> navigation.navigate("Support")} className=" p-2 rounded-lg bg-slate-500 items-center">
                     <Text className="font-medium text-white">Developer Support</Text>
                 </TouchableOpacity>
                 </View>

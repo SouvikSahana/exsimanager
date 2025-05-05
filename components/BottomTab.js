@@ -1,30 +1,36 @@
 import { View, Text,KeyboardAvoidingView,Platform, TouchableOpacity, Pressable } from 'react-native'
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Foundation from '@expo/vector-icons/Foundation';
-import {useNavigation, StackActions} from "@react-navigation/native"
+import {useNavigation, StackActions, useRoute} from "@react-navigation/native"
 
 const BottomTab = () => {
     const [active,setIsActive] = useState("")
     const navigation= useNavigation()
+    const [page,setPage]=useState("Home")
 
     const handleNavigate=async(path)=>{
         try{
-            navigation.reset({
+            if(path!="Expense" && path==page){
+
+            }else{
+             navigation.reset({
                 index: 0,  // Set TransactionHistory as the first screen
                 routes: [{ name: path }],
               });
+            }
+            setPage(path)
         }catch(error){
             console.log(error)
         }
     }
-   
+ 
 
   return (
     <View className="absolute bottom-1 flex-1 w-[100%]">
-        <View className="bg-[#0489F4] h-[65px] p-2 mb-6 mx-4 rounded-xl elevation-xl flex flex-row justify-between px-10">
+        <View className="bg-[#0489F4] h-[65px] p-2 mb-6 mx-4 rounded-xl elevation-xl flex  flex-row justify-between px-4">
             <TouchableOpacity className="p-4 bg-blue-400 rounded-full" onPress={()=> handleNavigate("Home")}>
                 <AntDesign name="home" size={24} color="white" />
                 </TouchableOpacity>

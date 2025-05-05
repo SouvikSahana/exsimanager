@@ -6,10 +6,10 @@ import {shareAsync, isAvailableAsync} from "expo-sharing"
 import * as DocumentPicker from 'expo-document-picker'
 // import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import * as Print from 'expo-print';
-
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const Download = () => {
-    const types=["transactions","items","targets","buddies"]
+    const types=["transactions","items","targets"]
     const months = [
       "January",
       "February",
@@ -291,25 +291,26 @@ const importDatabase = async () => {
 
   return (
     <View>
-        <View className="flex flex-row flex-wrap gap-3 mt-4 p-2 justify-center">
+        <View className="flex flex-row flex-wrap gap-3 mt-4 p-2 justify-center border-b-[1px] pb-6 border-gray-300 mx-4">
       {types?.map((type,index)=>{
         return(
-        <TouchableOpacity key={index} onPress={()=>handleDownload(type)} className="bg-purple-500  p-2 rounded-lg">
-            <Text className="text-white">Download {type}</Text>
+        <TouchableOpacity key={index} onPress={()=>handleDownload(type)} className="bg-orange-500 flex flex-row items-center text-center justify-center gap-3 py-4 w-[100%]  p-2 rounded-lg">
+           <AntDesign name="download" size={20} color="white" /> <Text className="text-white ">Download {type}</Text>
         </TouchableOpacity>)
       })}
       
       </View>
-      <TouchableOpacity  onPress={saveAsPDF} className="bg-green-500 mx-6 mt-4 items-center p-2 rounded-lg">
-            <Text className="text-white">Expeses As PDF</Text>
+      <TouchableOpacity  onPress={saveAsPDF} className="bg-blue-500 mx-6 mt-4 flex gap-3 flex-row justify-center items-center p-2 py-4 rounded-lg">
+      <AntDesign name="download" size={20} color="white" /><Text className="text-white">Expeses As PDF</Text>
         </TouchableOpacity>
 
-      <TouchableOpacity  onPress={exportDatabase} className="bg-red-500 mx-6 mt-4 items-center p-2 rounded-lg">
-            <Text className="text-white">Export Database</Text>
-        </TouchableOpacity>
+     
 
-      <TouchableOpacity  onPress={importDatabase} className="bg-blue-400 mx-6 mt-4 items-center  p-2 rounded-lg">
-            <Text className="text-white">Import Database</Text>
+      <TouchableOpacity  onPress={importDatabase} className="bg-blue-500 mx-6 mt-4 flex gap-3 flex-row justify-center items-center  p-2 py-4 rounded-lg">
+      <AntDesign name="download" size={20} color="white" /> <Text className="text-white">Import Database</Text>
+        </TouchableOpacity>
+        <TouchableOpacity  onPress={exportDatabase} className="bg-green-500 flex flex-row justify-center gap-3  mx-6 mt-4 items-center p-2 py-4 rounded-lg">
+        <AntDesign name="download" size={20} color="white" /> <Text className="text-white">Export Database</Text>
         </TouchableOpacity>
     </View>
   )

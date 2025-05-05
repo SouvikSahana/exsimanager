@@ -126,26 +126,24 @@ const Target = () => {
             <Pressable android_ripple={{color:'blue'}} onPress={()=>{
                 setEditElement({item:""});
                 setIsAddModal(true)
-            }} className="bg-green-600 p-2 rounded-xl  overflow-hidden  ">
-                <Text className="text-white text-center">Add Target</Text>
+            }} className="bg-blue-200 p-2 rounded-xl  overflow-hidden  ">
+                <Text className="text-blue-600 text-center">Add Target</Text>
             </Pressable>
         </View>
         <ScrollView >
-        <View className="px-2  mt-2  pb-20 ">
+        <View className="px-2  mt-2  pb-28">
                 {targets?.map((target)=>{
                     return(
-                        <View key={target?.id} className="px-2 pb-2  m-[1px] mx-2 bg-green-200 rounded-lg ">
+                        <View key={target?.id} className="px-2  flex flex-row  m-[1px] mx-2 border-b-[1px] border-slate-300 rounded-lg ">
+                            <TouchableOpacity className=" flex-1" onPress={()=>{setIsAddModal(true); setEditElement(target);setIsEdit(true)}} >
                             <View className="flex flex-row justify-between items-center "> 
-                                <Text className="font-semibold text-lg ">{target?.item}</Text>
-                                <Text className="text-xs ">{formatDate(target.date)}</Text>
+                                <Text className=" text-lg text-blue-800 ">{target?.item}</Text>
+                                <Text className="text-xs italic text-slate-400">{formatDate(target.date)}</Text>
                             </View>
-                            
-                            <View className="flex flex-row justify-between items-center px-4 mt-1">
-                            <TouchableOpacity onPress={()=>{setIsAddModal(true); setEditElement(target);setIsEdit(true)}} className=" p-1  rounded-full border-[1px] border-white">
-                                <Feather name="edit" size={20} color="purple" />
-                                </TouchableOpacity>
-                            <TouchableOpacity onPress={()=>handleDelete(target?.id)} className="border-[1px] border-white rounded-full p-1">
-                                <MaterialIcons name="delete" size={24} color="red" />
+                            </TouchableOpacity>
+                            <View className="flex flex-row justify-between items-center pl-2 mt-1">
+                            <TouchableOpacity onPress={()=>handleDelete(target?.id)} className=" p-1">
+                                <MaterialIcons name="delete" size={24} color="#E30B5C" />
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -162,7 +160,8 @@ const Target = () => {
                     onRequestClose={closeAddModal}
                     transparent={true}
                     >
-                        <View className="bg-white w-[90vw] mx-auto my-auto elevation-xl gap-2 rounded-xl p-4">
+                        <View className="bg-white w-[90vw] h-[45vh] flex mx-auto mt-[15%] elevation-xl gap-2 rounded-xl p-4">
+                            <View className="flex-1">
                             <TouchableOpacity onPress={closeAddModal} className="z-50 absolute right-4 top-4 bg-gray-200 rounded-full p-2">
                                 <AntDesign name="closecircleo" size={17} color="black" />
                             </TouchableOpacity>
@@ -171,7 +170,8 @@ const Target = () => {
                                 <Text className="font-medium text-lg">Item Name: </Text>
                                 <TextInput className="border-[1px]  border-gray-400 p-2 rounded-lg " onChangeText={(e)=>setEditElement({... editElement, item:e})} placeholder='Enter name' value={editElement?.item} />
                             </View>
-                            
+                            </View>
+
                             <View className=" rounded-lg bg-blue-500 m-1 overflow-hidden mx-8 mt-6 ">
                                 <Pressable onPress={handleTarget} android_ripple={{color:'blue'}} className="p-3 items-center">
                                     <Text className="text-white">{isEdit?"Edit":"Save"}</Text>

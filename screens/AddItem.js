@@ -1,12 +1,14 @@
-import { View, Text, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, FlatList, Alert, SectionList} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import * as SQLite from 'expo-sqlite';
+
 
 const AddItem = () => {
     const [label,setLabel]= useState("")
     const [category,setCategory]= useState("")
     const [items,setItems]= useState([])
+    
 
     const removeItem=async(id)=>{
         try{
@@ -87,16 +89,43 @@ const AddItem = () => {
         createDb()
         fetchDb()
      },[])
+
+    //  const groupedData = items.reduce((acc, item) => {
+    //     const existingSection = acc.find(section => section.title === item.category);
+    //     if (existingSection) {
+    //       existingSection.data.push(item);
+    //     } else {
+    //       acc.push({ title: item.category, data: [item] });
+    //     }
+    //     return acc;
+    //   }, []);
+    
+    const categoryMap = items.reduce((acc, item) => {
+        if (!acc[item.category]) {
+          acc[item.category] = item.label;
+        } else {
+          acc[item.category] += `  |  ${item.label}`;
+        }
+        return acc;
+      }, {});
+      
+      // Convert to SectionList format
+      const groupedData = Object.keys(categoryMap).map(category => ({
+        title: category,
+        data: [{ id: category, label: categoryMap[category] }],
+      }));
+
+     
   return (
     <View className="flex flex-1">
         <View className="p-2 px-4 gap-2">
-            <TextInput value={label} onChangeText={(e)=>setLabel(e)} placeholder='Enter item name' className="border-[1px] border-black px-2 rounded-lg"/>
-            <TextInput value={category} onChangeText={(e)=>setCategory(e)} placeholder='Enter category' className="border-[1px] border-black px-2 rounded-lg"/>
+            <TextInput value={label} onChangeText={(e)=>setLabel(e)} placeholder='Enter item name' className="border-[1px] border-black px-2 py-4 rounded-lg"/>
+            <TextInput value={category} onChangeText={(e)=>setCategory(e)} placeholder='Enter category' className="border-[1px] border-black px-2 py-4 rounded-lg"/>
             <TouchableOpacity disabled={label=="" && category==""} onPress={handleAdd} className="items-center bg-blue-600 rounded-lg p-2 w-[70%] mx-auto">
                 <Text className="text-white">Save Item</Text>
             </TouchableOpacity>
         </View>
-        <FlatList
+        {/* <FlatList
             data={items}
             keyExtractor={(item)=> item.id}
             className="p-2 px-4 flex-1"
@@ -119,7 +148,26 @@ const AddItem = () => {
                             
                     </View>)
             }}
-         />
+         /> */}
+
+<SectionList
+  sections={groupedData}
+  keyExtractor={(item) => item.id}
+  renderSectionHeader={({ section: { title } }) => (
+    <Text className="font-bold text-lg mt-2 ml-4 text-blue-700">{title}</Text>
+  )}
+  renderItem={({ item,index }) => {
+    return  <View
+          key={item?.data?.id}
+          className="bg-blue-300 p-2 rounded-lg gap-4 flex-row justify-between items-center m-1 mx-4"
+        >
+          <Text className="font-semibold">{item?.label}</Text>
+        </View>
+}
+  }
+  ListFooterComponent={() => <View className="h-[100px]" />}
+/>
+
     </View>
   )
 }

@@ -1,4 +1,4 @@
-import { View, Text,Image ,TouchableOpacity,ScrollView, Alert, TextInput,Modal, Pressable} from 'react-native'
+import { View, Text,Image ,StyleSheet,FlatList,TouchableOpacity,ScrollView, Alert, TextInput,Modal, Pressable} from 'react-native'
 import React,{useState,useEffect} from 'react'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Feather from '@expo/vector-icons/Feather';
@@ -6,8 +6,43 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import CustomButton from "../components/CustomButton"
 import * as SQLite from 'expo-sqlite';
+import * as Contacts from 'expo-contacts';
 
+
+  
 const MoneyBuddy = ({navigation}) => {
+    const [contacts, setContacts] = useState([]);
+  const [filteredContacts, setFilteredContacts] = useState([]);
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Contacts.requestPermissionsAsync();
+      if (status === 'granted') {
+        const { data } = await Contacts.getContactsAsync({
+          fields: [Contacts.Fields.PhoneNumbers],
+        });
+
+        if (data.length > 0) {
+          setContacts(data);
+          setFilteredContacts(data);
+        }
+      }
+    })();
+  }, []);
+
+  const handleSearch = (text) => {
+    setSearch(text);
+    const lower = text.toLowerCase();
+    const filtered = contacts.filter((contact) =>
+      contact.name?.toLowerCase().includes(lower) ||
+      contact.phoneNumbers?.some((num) =>
+        num.number.replace(/\s|-/g, '').includes(lower.replace(/\s|-/g, ''))
+      )
+    );
+    setFilteredContacts(filtered);
+  };
+
     const [isModalVisible,setIsModalVisible]= useState(false)
     const [isEdit,setIsEdit]= useState(false)
     const [editContent,setEditContent]= useState({})
@@ -101,17 +136,17 @@ const MoneyBuddy = ({navigation}) => {
     return (
     <View className="flex-1 ">
 
-      <View className="flex justify-end items-start px-4 pt-4">
+      {/* <View className="flex justify-end items-start px-4 pt-4">
                 <TouchableOpacity onPress={()=>{setIsModalVisible(true); setEditContent({id:Date.now(),name:"",mobile:""})}} className="bg-blue-500 text-center flex justify-center items-center p2 w-16 h-16 rounded-full">
                 <FontAwesome6 name="add"  size={30} color="white" />
                 </TouchableOpacity>
-            </View>
+            </View> */}
 
-        <ScrollView >
+        {/* <ScrollView >
             <View className="flex  gap-2 p-5  pb-20" >
                 {buddies?.map((buddy,index)=>{
                     return(
-                        <View key={buddy.id} className="bg-blue-200 border-gray-400 border-[1px] p-3 rounded-lg">
+                        <View key={buddy.id} className="border-b-[1px] border-gray-400  p-3 ">
                             <Pressable onPress={()=>navigation.navigate("BuddyHistory",{name:buddy?.name,mobile:buddy?.mobile})}>
                                 <Text className="text-center font-bold text-lg ">{buddy?.name}</Text>
                                 <Text className="text-center text-sx mb-2 italic ">{buddy?.mobile}</Text>
@@ -131,8 +166,37 @@ const MoneyBuddy = ({navigation}) => {
                     )
                 })}
             </View>
-        </ScrollView>
+        </ScrollView> */}
             
+            <View style={styles.wrapper}>
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search by name or number"
+        value={search}
+        onChangeText={handleSearch}
+      />
+      <FlatList
+        data={filteredContacts}
+        keyExtractor={(item) => item.id}
+        renderItem={(itemData)=>{
+            return  <TouchableOpacity style={styles.item} onPress={()=>{if(itemData?.item?.phoneNumbers?.[0]?.number)navigation.navigate("BuddyHistory",{name:itemData?.item?.name,mobile:itemData?.item?.phoneNumbers?.[0]?.number,key:itemData?.item?.lookupKey})}}>
+            <Text style={styles.name}>{itemData?.item?.name}</Text>
+            <Text style={styles.phone}>
+              {itemData?.item?.phoneNumbers?.[0]?.number || 'No phone number'}
+            </Text>
+          </TouchableOpacity>
+        }}
+        contentContainerStyle={styles.container}
+        ListFooterComponent={()=>{
+            return (
+                <View className="h-[100px] ">
+                    </View>
+            )
+            }}
+      />
+    </View>
+      
+    
 
             <Modal
             visible={isModalVisible}
@@ -174,3 +238,33 @@ const MoneyBuddy = ({navigation}) => {
 }
 
 export default MoneyBuddy
+
+const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        // paddingTop: 50,
+      },
+      container: {
+        paddingHorizontal: 16,
+      },
+      searchBar: {
+        margin: 16,
+        padding: 10,
+        borderColor: '#aaa',
+        borderWidth: 1,
+        borderRadius: 8,
+      },
+      item: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderColor: '#ccc',
+      },
+      name: {
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+      phone: {
+        fontSize: 14,
+        color: '#555',
+      },
+  });

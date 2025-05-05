@@ -3,6 +3,7 @@ import React,{useState,useCallback, useRef,useEffect} from 'react'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
+import Feather from '@expo/vector-icons/Feather';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useNavigation} from "@react-navigation/native"
 import * as SQLite from 'expo-sqlite';
@@ -80,6 +81,17 @@ const fetchData=async()=>{
         console.log(error)
     }
 }
+const refresh=async()=>{
+  try{
+      const db=await SQLite.openDatabaseAsync("mydb")
+          const data= await db.getAllAsync("SELECT * FROM transactions order by date desc");
+          setTransactions(data)
+          setFirstTime(false)
+          setDate(new Date())
+  }catch(error){
+      console.log(error)
+  }
+}
 useEffect(()=>{
     calendar(date)
  },[date])
@@ -109,9 +121,12 @@ const groupedTransactions = transactions.reduce((acc, transaction) => {
     <View className="flex-1">
       
         {/* Filter */}
-        <View className="p-3 px-6 flex flex-row justify-between">
+        <View className="p-1 pt-3 px-6 flex flex-row justify-between ml-auto">
             {/* for month & Year */}
             <View className="flex flex-row gap-2">
+                  <TouchableOpacity onPress={refresh}>
+                    <EvilIcons name="refresh" size={24} color="green" />
+                  </TouchableOpacity>
                     <Text className=" pl-2">{formatDate(date?.getTime())}</Text>
                     <TouchableOpacity onPress={showDatepicker}>
                      <EvilIcons name="calendar" size={24} color="black" />
@@ -168,36 +183,41 @@ const groupedTransactions = transactions.reduce((acc, transaction) => {
     sections={sections}
     keyExtractor={(item) => item.id}
     renderSectionHeader={({ section: { title } }) => (
-      <Text className="text-lg text-blue-600 font-semibold bg-gray-100  mt-2 mx-4">{title}</Text>
+      <Text className="text-[15px] italic text-blue-600 font-semibold bg-gray-100  mt-2 mx-4">{title}</Text>
     )}
     renderItem={({ item }) => (
       <TouchableOpacity
         onPress={() => navigation.navigate("Transaction", { id: item.id })}
-        className={`flex flex-row mx-4 ${
-          item?.expenseType == "spent"
-            ? "bg-red-200"
-            : item?.expenseType == "lent"
-            ? "bg-purple-200"
-            : item?.expenseType == "borrow"
-            ? "bg-slate-300"
-            : "bg-green-200"
-        } rounded-lg items-center gap-3 p-1 px-3 mt-1`}
+        className={`flex flex-row mx-4  rounded-lg items-center py-1 gap-3 p-1 px-3 mt-1 border-b-[1px] border-gray-200`}
       >
         <View className="flex-1">
-          <Text className="text-[15px] font-bold">{item.item} </Text>
-          <Text className="text-[12px] text-gray-600">{formatDate(item.date)}</Text>
+          <Text  className={`text-[15px]  ${
+          item?.expenseType == "spent"
+            ? "text-red-600"
+            : item?.expenseType == "lent"
+            ? "text-purple-600"
+            : item?.expenseType == "borrow"
+            ? "text-slate-600"
+            : "text-green-600"
+        }`}>{item.item} </Text>
+          {/* <Text className="text-[12px] text-gray-600">{formatDate(item.date)}</Text> */}
         </View>
-        <View className="flex items-center">
+        <View className="flex items-center flex-row gap-2">
+          {(item?.expenseType == "spent" || item?.expenseType == "lent")?<Feather name="trending-down" size={14} color={item?.expenseType == "spent"?"red":"purple"}/>:<Feather name="trending-up" size={14}  color={item?.expenseType == "earn"?"green":"slate"}/>}
           <Text
-            className={
-              item.expenseType == "spent"
-                ? "text-red-600 text-[14px] font-medium"
-                : "text-green-600 text-[14px] font-medium"
-            }
+            className={`text-[12px] flex gap-4  ${
+              item?.expenseType == "spent"
+                ? "text-red-600"
+                : item?.expenseType == "lent"
+                ? "text-purple-600"
+                : item?.expenseType == "borrow"
+                ? "text-slate-600"
+                : "text-green-600"
+            }`}
           >
-            ₹ {item.price}
+             ₹ { Number(item.price).toFixed(2)} 
           </Text>
-          <Text
+          {/* <Text
             className={
               item.expenseType == "spent"
                 ? "text-red-600 text-xs"
@@ -205,7 +225,7 @@ const groupedTransactions = transactions.reduce((acc, transaction) => {
             }
           >
             {item.expenseType}
-          </Text>
+          </Text> */}
         </View>
       </TouchableOpacity>
     )}
